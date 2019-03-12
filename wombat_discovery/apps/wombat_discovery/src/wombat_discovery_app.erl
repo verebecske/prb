@@ -15,6 +15,7 @@
 %%====================================================================
 
 start(_StartType, _StartArgs) ->
+	io:format("Hello wombat_discovery_app start ~n"),
     wombat_discovery_sup:start_link().
 
 %%--------------------------------------------------------------------
