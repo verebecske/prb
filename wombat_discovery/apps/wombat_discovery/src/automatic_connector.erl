@@ -4,21 +4,37 @@
 
 -export([start_link/0]).
 -export([alloc/0, free/1]).
--export([init/1, handle_call/3, handle_cast/2]).
+-export([init/1, handle_info/2 ,handle_call/3, handle_cast/2]).
+
+-record(state, {discovery_config}).
 
 start_link() ->
 	io:format("Hello automatic_connector start_link ~n"),
-    gen_server:start_link({local, automatic_connector}, automatic_connector, [],[]).
+    State = #state{discovery_config = no_conig},
+    gen_server:start_link({local, automatic_connector}, automatic_connector, State,[]).
+
+init(_Args) ->
+    Discovery_config = wombat_discovery_app:load_config(),
+    io:format("Hello automatic_connector init, my args: ~p ~n",[Discovery_config]),
+    self() ! start_discovery,
+    {ok, _Args}.
+
+handle_info(start_discovery, {State,no_conig}) ->
+    io:format("No Wombat Discovery plugin configuration found. ~n"),
+    {noreply,State};
+
+handle_info(start_discovery, State) ->
+    io:format("~n State: ~p ~n",[State]),
+    {noreply,State}.
+
+handle_info({try_again,Count}, State) ->
+    {noreply,State}.
 
 alloc() ->
     gen_server:call(automatic_connector, alloc).
 
 free(Ch) ->
     gen_server:cast(automatic_connector, {free, Ch}).
-
-init(_Args) ->
-	io:format("Hello automatic_connector init ~n"),
-    {ok, gen_server:channels()}.
 
 handle_call(alloc, _From, Chs) ->
     {Ch, Chs2} = gen_server:alloc(Chs),
