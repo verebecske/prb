@@ -1,4 +1,4 @@
--sname wombat_discovery
+-name 'wombat_discovery@127.0.0.1'
 
 -setcookie wombat_discovery_cookie
 
