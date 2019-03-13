@@ -15,7 +15,6 @@
 %%====================================================================
 
 start(_StartType, _StartArgs) ->
-	io:format("Hello wombat_discovery_app start ~n"),
     wombat_discovery_sup:start_link().
 
 %%--------------------------------------------------------------------
@@ -27,7 +26,6 @@ stop(_State) ->
 %%====================================================================
 
 load_config() ->
-	io:format("Hello wombat_discovery_app load_config ~n"),
 
 	SysNodeName = os:getenv("WOMBAT_NODENAME"),
 	SysCookie = os:getenv("WOMBAT_COOKIE"),
@@ -45,7 +43,7 @@ load_config() ->
 						false -> wombat;
 						_ -> list_to_atom(SysCookie)
 					end,
-					{list_to_atom(SysNodeName),Cookie,RetryWait,RetryCount};
-		[_,{Nodename,Cookie}] -> {Nodename,Cookie,RetryWait,RetryCount}
+					{list_to_atom(SysNodeName),Cookie,RetryCount,RetryWait};
+		[_,{Nodename,Cookie}] -> {Nodename,Cookie,RetryCount,RetryWait}
 	end.
 

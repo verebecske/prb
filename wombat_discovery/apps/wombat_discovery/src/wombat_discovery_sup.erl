@@ -20,7 +20,6 @@
 %%====================================================================
 
 start_link() ->
-	io:format("Hello wombat_discovery_sup start_link ~n"),
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 %%====================================================================
@@ -28,7 +27,6 @@ start_link() ->
 %%====================================================================
 
 init([]) ->
-	io:format("Hello wombat_discovery_sup init ~n"),
     {ok, {{one_for_one, 5, 10},
           [
           child(automatic_connector, start_link, [])
