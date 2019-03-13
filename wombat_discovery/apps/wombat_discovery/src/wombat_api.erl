@@ -8,14 +8,13 @@ discover_me(NodeName,Cookie) ->
 	TargetCookie = erlang:get_cookie(),
 	TargetNode = erlang:node(),
 	Target = {wo_discover_dynamic_nodes, NodeName},
-	%Target = {me, 'tas@Balints-MacBook-Pro'},
-	%Target = {me, 'wombat@Balints-MacBook-Pro'},
-	%Target = {me, 'wombat@localhost'},
+	%Target = {me, 'tas@127.0.0.1'},
 	Request = {auto_discover_node, TargetNode, TargetCookie},
 	
 	try gen_server:call(Target, Request, ?TIMEOUT) of
-		Ans -> Ans
+		Ans -> io:format("Hello api try ~p ~n",[Ans])
 	catch
+		exit:Msg -> io:format("Hello api catch ~p ~n",[Msg]), no_connection;
 		exit:{{nodedown, _}, _} -> no_connection;
     	exit:{noproc, _} -> no_connection
 	after 

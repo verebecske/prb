@@ -43,7 +43,7 @@ handle_info(Msg,State) ->
 
 handle_call(Msg, _From, State) ->
      io:format("Hello automatic_connector call ~n ~p ~n ~p ~n ~p ~n",[Msg,_From,State]),
-    {reply, State}.
+    {reply, ok, State}.
 
 handle_cast(Msg, State) ->
     io:format("Hello automatic_connector cast ~n ~p ~n ~p ~n", [Msg, State]),
@@ -57,7 +57,7 @@ do_discover(Node, Cookie, Count, Wait) ->
       {error, already_added, Msg} -> io:format("Warning: ~p ~nStopping. ~n", [Msg]);
       {error, _Reason, Msg} -> io:format("Error: ~p ~nStopping. ~n", [Msg]);
       no_connection ->
-      io:format("Wombat connection failed. Ensure the Wombat cookie is correct. ~nIf the node is already in Wombat, this may be OK. Retrying..."),
+      io:format("Wombat connection failed. Ensure the Wombat cookie is correct. ~nIf the node is already in Wombat, this may be OK. Retrying... ~n"),
       % timer:send_after({try_again, Count}, self(), 1) / erlang:send_after(1,self(),{try_again,Count}) / erlang:start_timer(1,self(),{try_again,Count})
       timer:sleep(Wait),
       self() ! {try_again, Count}
