@@ -10,15 +10,7 @@ As Wombat is installed near the application it is hard to orchestrate the discov
 
 ## Installation
 
-This package only works on Elang nodes. To use it just specify the dependency `wombat_discovery` in your mix (?)file.
-
-```erlang
-def deps do
-  [
-    {:wombat_discovery, "~> 1.0.1"}
-  ]
-end
-```
+This package only works on Elang nodes. 
 
 ## Usage
 
@@ -26,19 +18,20 @@ The plugin can be configured multiple ways, the easiest way is to define two env
 `WOMBAT_NODENAME` should be the Erlang nodename of Wombat, for example `wombat@static.host`.
 `WOMBAT_COOKIE` should be the cookie of Wombat, by default it's `wombat`.
 
-The other way is to configure the `wombat_discovery` application in the config.exs(?) file, for example:
+The other way is to configure the `wombat_discovery` application in the sys.config file, for example:
 
 ```elang
-
-config :wombat_discovery,
-  wombat_nodename: :"wombat@static.host",
-  wombat_cookie: :wombat,
-  retry_count: 20,
-  retry_wait: 30000
-
+[
+  { wombat_discovery, [
+  	{wombat_nodename, 'wombat@127.0.0.1'},
+  	{wombat_cookie, wombat},
+  	{retry_count, 20},
+  	{retry_wait, 30000}
+  ]}
+]
   ```
 
 Build
 -----
 
-    $ rebar3 compile
+    $ rebar3 release
