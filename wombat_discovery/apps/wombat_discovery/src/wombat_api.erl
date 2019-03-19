@@ -11,9 +11,8 @@ discover_me(NodeName,Cookie) ->
 	Request = {auto_discover_node, TargetNode, TargetCookie},
 
 	try gen_server:call(Target, Request, ?TIMEOUT) of
-		Ans -> io:format("Hello api try ~p ~n",[Ans]), Ans
+		Ans -> Ans
 	catch
-		exit:Msg -> io:format("Hello api catch ~p ~n",[Msg]), no_connection;
 		exit:{{nodedown, _}, _} -> no_connection;
     	exit:{noproc, _} -> no_connection
 	after 
